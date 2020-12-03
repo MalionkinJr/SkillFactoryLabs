@@ -1,0 +1,33 @@
+import numpy as np
+count = 0  # глобальная переменная-счетчик рекурсий
+
+
+def game_core_binary_search(prediction_list, number, min_number, max_number):  # необходимо ввести параметры
+    # список, сам number - загаданное рандомно число, первый и последний элементы списка
+    global count
+    count += 1
+
+    mid = (min_number + max_number) // 2  # типичный алгоритм бинарного поиска
+    if number == prediction_list[mid]:
+        # print(count, number) - при желании можно откомментить - на экран выведется кол-во попыток и загаданное число
+        result = count
+        count = 0
+        return result
+
+    if number < prediction_list[mid]:  # типичная рекурсия при бинарном поиске
+        return game_core_binary_search(prediction_list, number, min_number, mid - 1)
+    else:
+        return game_core_binary_search(prediction_list, number, mid + 1, max_number)
+
+
+def score_game_binary():
+    count_ls = []
+    for i in range(1000): # 1000 раз вызываем функцию (параметры можно менять)
+        count_ls.append(game_core_binary_search([num for num in range(1, 101)],  np.random.randint(1, 101), 1, 100))
+    avg = int(sum(count_ls) / len(count_ls))
+    # print(count_ls) - при желании можно откомментить - выведется массив из кол-ва попыток
+    print(f"Ваш алгоритм угадывает число в среднем за {avg} попыток")
+    return avg
+
+
+score_game_binary()  # функция-счетчик, не требующая параметров 
